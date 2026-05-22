@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "leaguecraft:block/lane_block",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "leaguecraft:block/lane_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "leaguecraft:block/lane_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "leaguecraft:block/lane_block",
+      "y": 270
+    }
+  }
+}
