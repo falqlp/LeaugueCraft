@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "minecraft:block/redstone_block"
-  }
+    "parent":  "minecraft:block/cube_all",
+    "textures":  {
+                     "all":  "leaguecraft:block/red_nexus"
+                 }
 }

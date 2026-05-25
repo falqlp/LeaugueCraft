@@ -18,7 +18,7 @@ public class LaneBlock extends Block {
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
-    return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+    return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
   }
 
   @Override

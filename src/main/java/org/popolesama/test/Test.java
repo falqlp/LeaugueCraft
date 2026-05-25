@@ -1,7 +1,6 @@
 package org.popolesama.test;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +26,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -76,14 +76,14 @@ public class Test {
           java.util.Set.of(BLUE_NEXUS.get(), RED_NEXUS.get(), BLUE_INHIBITOR.get(), RED_INHIBITOR.get(), BLUE_TURRET.get(), RED_TURRET.get()),
           null));
 
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> MINION = registerMonster("minion", LeagueMonster.Profile.MINION, 0.6F, 1.95F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> BLUE_MINION = registerMonster("blue_minion", LeagueMonster.Profile.BLUE_MINION, 0.6F, 1.95F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> RED_MINION = registerMonster("red_minion", LeagueMonster.Profile.RED_MINION, 0.6F, 1.95F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> GROMP = registerMonster("gromp", LeagueMonster.Profile.GROMP, 1.1F, 1.4F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> KRUG = registerMonster("krug", LeagueMonster.Profile.KRUG, 1.2F, 1.6F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> RAPTOR = registerMonster("raptor", LeagueMonster.Profile.RAPTOR, 0.8F, 1.4F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> DRAGON = registerMonster("dragon", LeagueMonster.Profile.DRAGON, 2.2F, 2.4F);
-  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> BARON_NASHOR = registerMonster("baron_nashor", LeagueMonster.Profile.BARON_NASHOR, 2.6F, 3.0F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> MINION = registerMonster("minion", Minion::new, 0.9F, 1.3F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> BLUE_MINION = registerMonster("blue_minion", BlueMinion::new, 0.9F, 1.3F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> RED_MINION = registerMonster("red_minion", RedMinion::new, 0.9F, 1.3F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> GROMP = registerMonster("gromp", Gromp::new, 1.1F, 1.4F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> KRUG = registerMonster("krug", Krug::new, 1.2F, 1.6F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> RAPTOR = registerMonster("raptor", Raptor::new, 0.8F, 1.4F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> DRAGON = registerMonster("dragon", Dragon::new, 2.2F, 2.4F);
+  public static final DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> BARON_NASHOR = registerMonster("baron_nashor", BaronNashor::new, 2.6F, 3.0F);
 
   public static final DeferredItem<SpawnEggItem> MINION_SPAWN_EGG = registerSpawnEgg("minion_spawn_egg", MINION, 0x3450a4, 0xd6d8ff);
   public static final DeferredItem<SpawnEggItem> BLUE_MINION_SPAWN_EGG = registerSpawnEgg("blue_minion_spawn_egg", BLUE_MINION, 0x1d4ed8, 0x93c5fd);
@@ -155,9 +155,9 @@ public class Test {
     return ITEMS.registerSimpleBlockItem(name, block, new Item.Properties());
   }
 
-  private static DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> registerMonster(String name, LeagueMonster.Profile profile, float width, float height) {
+  private static DeferredHolder<EntityType<?>, EntityType<LeagueMonster>> registerMonster(String name, EntityType.EntityFactory<LeagueMonster> factory, float width, float height) {
     return ENTITY_TYPES.register(name, () -> EntityType.Builder
-        .of((EntityType.EntityFactory<LeagueMonster>) (type, level) -> new LeagueMonster(type, level, profile), MobCategory.MONSTER)
+        .of(factory, MobCategory.MONSTER)
         .sized(width, height)
         .clientTrackingRange(8)
         .build(name));
@@ -203,16 +203,31 @@ public class Test {
   @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
   public static class ClientModEvents {
     @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+      event.registerLayerDefinition(LeagueMinionRenderer.LAYER, LeagueMinionModel::createBodyLayer);
+      event.registerLayerDefinition(LeagueJungleRenderer.GROMP_LAYER, GrompModel::createBodyLayer);
+      event.registerLayerDefinition(LeagueJungleRenderer.KRUG_LAYER, KrugModel::createBodyLayer);
+      event.registerLayerDefinition(LeagueJungleRenderer.RAPTOR_LAYER, RaptorModel::createBodyLayer);
+      event.registerLayerDefinition(LeagueJungleRenderer.DRAGON_LAYER, DragonModel::createBodyLayer);
+      event.registerLayerDefinition(LeagueJungleRenderer.BARON_LAYER, BaronNashorModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+      event.registerBlockEntityRenderer(LEAGUE_STRUCTURE_BLOCK_ENTITY.get(), LeagueStructureRenderer::new);
+    }
+
+    @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
       event.enqueueWork(() -> {
-        EntityRenderers.register(MINION.get(), ZombieRenderer::new);
-        EntityRenderers.register(BLUE_MINION.get(), ZombieRenderer::new);
-        EntityRenderers.register(RED_MINION.get(), ZombieRenderer::new);
-        EntityRenderers.register(GROMP.get(), ZombieRenderer::new);
-        EntityRenderers.register(KRUG.get(), ZombieRenderer::new);
-        EntityRenderers.register(RAPTOR.get(), ZombieRenderer::new);
-        EntityRenderers.register(DRAGON.get(), ZombieRenderer::new);
-        EntityRenderers.register(BARON_NASHOR.get(), ZombieRenderer::new);
+        EntityRenderers.register(MINION.get(), LeagueMinionRenderer::new);
+        EntityRenderers.register(BLUE_MINION.get(), LeagueMinionRenderer::new);
+        EntityRenderers.register(RED_MINION.get(), LeagueMinionRenderer::new);
+        EntityRenderers.register(GROMP.get(), LeagueJungleRenderer::gromp);
+        EntityRenderers.register(KRUG.get(), LeagueJungleRenderer::krug);
+        EntityRenderers.register(RAPTOR.get(), LeagueJungleRenderer::raptor);
+        EntityRenderers.register(DRAGON.get(), LeagueJungleRenderer::dragon);
+        EntityRenderers.register(BARON_NASHOR.get(), LeagueJungleRenderer::baron);
       });
     }
   }
