@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "shape=base": {
+      "model": "leaguecraft:block/red_inhibitor_part_base"
+    },
+    "shape=core": {
+      "model": "leaguecraft:block/red_inhibitor_part_core"
+    },
+    "shape=top": {
+      "model": "leaguecraft:block/red_inhibitor_part_top"
+    }
+  }
+}

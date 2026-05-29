@@ -1,6 +1,43 @@
 {
-    "parent":  "minecraft:block/cube_all",
-    "textures":  {
-                     "all":  "leaguecraft:block/inhibitor"
-                 }
+  "textures": {
+    "body": "leaguecraft:block/inhibitor",
+    "particle": "leaguecraft:block/inhibitor"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [15, 4, 15],
+      "faces": {
+        "down": {"texture": "#body"},
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    },
+    {
+      "from": [4, 4, 4],
+      "to": [12, 12, 12],
+      "faces": {
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    },
+    {
+      "from": [6, 12, 6],
+      "to": [10, 16, 10],
+      "faces": {
+        "down": {"texture": "#body"},
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    }
+  ]
 }

@@ -1,6 +1,54 @@
 {
-    "parent":  "minecraft:block/cube_all",
-    "textures":  {
-                     "all":  "leaguecraft:block/turret"
-                 }
+  "textures": {
+    "body": "leaguecraft:block/turret",
+    "particle": "leaguecraft:block/turret"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [15, 3, 15],
+      "faces": {
+        "down": {"texture": "#body"},
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    },
+    {
+      "from": [4, 3, 4],
+      "to": [12, 12, 12],
+      "faces": {
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    },
+    {
+      "from": [2, 12, 2],
+      "to": [14, 15, 14],
+      "faces": {
+        "down": {"texture": "#body"},
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    },
+    {
+      "from": [6, 15, 6],
+      "to": [10, 16, 10],
+      "faces": {
+        "up": {"texture": "#body"},
+        "north": {"texture": "#body"},
+        "south": {"texture": "#body"},
+        "west": {"texture": "#body"},
+        "east": {"texture": "#body"}
+      }
+    }
+  ]
 }

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "shape=base": {
+      "model": "leaguecraft:block/turret_part_base"
+    },
+    "shape=core": {
+      "model": "leaguecraft:block/turret_part_core"
+    },
+    "shape=top": {
+      "model": "leaguecraft:block/turret_part_top"
+    }
+  }
+}

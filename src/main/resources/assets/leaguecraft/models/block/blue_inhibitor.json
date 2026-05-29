@@ -1,6 +1,7 @@
 {
-    "parent":  "minecraft:block/cube_all",
-    "textures":  {
-                     "all":  "leaguecraft:block/blue_inhibitor"
-                 }
+  "parent": "leaguecraft:block/inhibitor",
+  "textures": {
+    "body": "leaguecraft:block/blue_inhibitor",
+    "particle": "leaguecraft:block/blue_inhibitor"
+  }
 }
